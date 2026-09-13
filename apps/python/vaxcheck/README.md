@@ -24,8 +24,8 @@ This is a runnable demo app, not a CALL-E SDK.
 | **Unit of work** | One CALL-E task per student — not one task per roster |
 | **Default mode** | Fixture replay. No network, no credentials, no calls |
 | **Runs with** | Python 3.11+, stdlib only. SDK needed only for `--execute` |
-| **Tests** | 56 (45 offline, 11 against the real SDK) |
-| **Outputs** | Text roster for the nurse, JSON for the office |
+| **Tests** | 68, all offline; 11 drive the real SDK through a mock HTTP transport |
+| **Outputs** | Text roster for the terminal, JSON for the office, a self-contained HTML board for the nurse |
 | **Never does** | Give medical advice, decide fitness to vaccinate, schedule anything recurring, or treat silence as consent |
 
 > **Origin.** This was built for Indonesia's *Bulan Imunisasi Anak Sekolah* (BIAS), the
@@ -186,6 +186,25 @@ Preflighting 2 of 6 students against CALL-E (US/English). This calls plan_call a
 2/2 ready to run.
 ```
 
+### The board — the roster as a page
+
+```bash
+python3 client.py --roster fixtures/sample_roster.json --mock --out roster.json --html board.html
+```
+
+`--html` writes the same triaged roster as a single self-contained HTML page: no JavaScript,
+no external assets, phone numbers already masked. The review queue comes first, every
+review card shows the guardian's reported answers beside the reasons, and the nurse's line
+closes the page. It is what a school nurse opens at 7 a.m.
+
+To add the live readiness and preflight panels from their JSON:
+
+```bash
+python3 client.py --roster fixtures/sample_roster.json --doctor --out doctor.json
+python3 client.py --roster fixtures/sample_roster.json --preflight --out preflight.json
+python3 board.py --roster roster.json --doctor doctor.json --preflight preflight.json -o board.html
+```
+
 ### 4. Execute — real outbound calls
 
 ```bash
@@ -284,11 +303,11 @@ numbers you are authorised to call before using `--execute`.
 python3 -m unittest discover -s tests -v
 ```
 
-56 tests. No network, no credentials, no calls.
+68 tests. No network, no credentials, no calls.
 
-**45 offline tests** cover E.164 handling and masking, every triage branch, schema
+**57 offline tests** cover E.164 handling and masking, every triage branch, schema
 sanitisation against unknown and illegal values, call-script safety properties, and
-the full roster-to-report flow.
+the full roster-to-report flow, and the HTML board (every student present, no raw number, review queue first, consent shown beside the flag, self-contained).
 
 **11 live-path tests** exercise the real CALL-E SDK. Rather than stubbing this app's
 own code, they install an `httpx` transport underneath a genuine `CalleClient`, so the

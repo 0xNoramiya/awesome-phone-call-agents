@@ -45,7 +45,8 @@ def build_parser() -> argparse.ArgumentParser:
         epilog=__doc__,
     )
     p.add_argument("--roster", required=True, help="path to a roster JSON file")
-    p.add_argument("--out", help="write the JSON roster result to this path")
+    p.add_argument("--out", help="write the JSON result to this path (roster, preflight or doctor)")
+    p.add_argument("--html", help="also write the immunisation-day board as a self-contained HTML page")
     p.add_argument(
         "--min-confidence",
         type=float,
@@ -104,6 +105,12 @@ def main(argv: list[str] | None = None) -> int:
 
         checks = doctor.run(session, students[0] if students else None)
         print(doctor.render(checks))
+        if args.out:
+            Path(args.out).write_text(
+                json.dumps([{"name": c.name, "status": c.status, "detail": c.detail} for c in checks], indent=2),
+                encoding="utf-8",
+            )
+            print(f"wrote {args.out}")
         return 0 if not any(c.status == doctor.FAIL for c in checks) else 1
 
     # ---- preflight: real CALL-E API, no dialling ---------------------------
@@ -215,6 +222,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.out:
         Path(args.out).write_text(report.dumps(records, session), encoding="utf-8")
         print(f"\nwrote {args.out}")
+    if args.html:
+        from vaxcheck import board
+
+        Path(args.html).write_text(board.render(report.to_json(records, session)), encoding="utf-8")
+        print(f"wrote {args.html}")
     return 0
 
 
