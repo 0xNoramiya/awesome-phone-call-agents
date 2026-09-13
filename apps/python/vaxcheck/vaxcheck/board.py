@@ -47,7 +47,7 @@ _FIELD_LABEL = {
 CSS = """
 :root{--paper:#FAF7EF;--paper2:#F1EBDD;--ink:#111111;--amber:#F2B640;--teal:#8FD3C0;--coral:#F28B6E;--grey:#D8D2C4;--shadow:#111111}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.4 "Bricolage Grotesque","Archivo","Helvetica Neue",Arial,sans-serif}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.4 "Bricolage Grotesque","Helvetica Neue",Arial,sans-serif}
 .wrap{max-width:1180px;margin:0 auto;padding:40px 32px 72px;position:relative}
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding-bottom:22px;border-bottom:5px solid var(--ink)}
 .brand{font-weight:800;font-size:28px;letter-spacing:-.01em;background:var(--ink);color:var(--paper);padding:10px 18px;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--amber);transform:rotate(-2deg)}
@@ -72,7 +72,7 @@ h2 .n{background:var(--ink);color:var(--paper);padding:3px 10px;border:3px solid
 .card.review .reasons li::before{background:var(--amber);outline:3px solid var(--ink)}
 .reported{grid-column:1/-1;border-top:3px solid var(--ink);padding-top:14px;margin-top:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 18px}
 .reported div{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.reported div b{display:block;font-family:"Bricolage Grotesque","Archivo","Helvetica Neue",Arial,sans-serif;font-size:19px;font-weight:800;text-transform:none;letter-spacing:-.01em;margin-top:3px;line-height:1.2}
+.reported div b{display:block;font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;font-size:19px;font-weight:800;text-transform:none;letter-spacing:-.01em;margin-top:3px;line-height:1.2}
 .reported div.flag b{background:var(--amber);display:inline;padding:1px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone;border:2px solid var(--ink)}
 .conf{position:absolute;right:16px;top:-16px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;font-weight:700;background:#fff;border:3px solid var(--ink);padding:4px 10px;letter-spacing:.06em}
 .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
