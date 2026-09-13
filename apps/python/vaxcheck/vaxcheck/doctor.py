@@ -17,6 +17,7 @@ the corridor and also costs nothing.
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 from dataclasses import dataclass
 
@@ -109,6 +110,27 @@ def check_api_key() -> Check:
     return Check("CALLE_API_KEY", OK, "accepted by the live Developer API")
 
 
+_CORRIDOR_WORDS = re.compile(
+    r"region|language|country|corridor|not (currently )?supported|unsupported",
+    re.IGNORECASE,
+)
+
+
+def classify_blockers(blockers: list[str]) -> tuple[str, str]:
+    """Separate a dead corridor from a planner asking about the goal.
+
+    `plan_call` returns clarifying questions for both. A corridor refusal is a
+    hard FAIL: no call can be placed. A question about the goal's wording is a
+    WARN: the corridor is fine, the instruction needs tightening.
+    """
+    if not blockers:
+        return FAIL, "plan_call was not ready to run and gave no reason"
+    corridor = [b for b in blockers if _CORRIDOR_WORDS.search(b)]
+    if corridor:
+        return FAIL, corridor[0]
+    return WARN, f"corridor accepted; planner asked about the goal: {blockers[0]}"
+
+
 def check_corridor(session: Session, student: Student) -> Check:
     try:
         result = preflight_student(session, student)
@@ -119,8 +141,8 @@ def check_corridor(session: Session, student: Student) -> Check:
             "region corridor", OK,
             f"{session.region}/{session.language} accepted by plan_call",
         )
-    blocker = result.blockers[0] if result.blockers else "plan_call was not ready to run"
-    return Check("region corridor", FAIL, blocker)
+    status, detail = classify_blockers(result.blockers)
+    return Check("region corridor", status, detail)
 
 
 def run(session: Session, student: Student | None = None) -> list[Check]:

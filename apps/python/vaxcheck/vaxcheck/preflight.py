@@ -21,7 +21,7 @@ import subprocess
 from dataclasses import dataclass
 from typing import Any
 
-from .task import Session, Student, display_goal
+from .task import Session, Student, preflight_goal
 
 
 class PreflightError(RuntimeError):
@@ -76,7 +76,7 @@ def preflight_student(
         "--language",
         session.language,
         "--goal",
-        display_goal(session, student),
+        preflight_goal(session, student),
         "--no-telemetry",
     ]
     try:

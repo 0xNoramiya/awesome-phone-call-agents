@@ -2,7 +2,7 @@ import sys, unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from vaxcheck.task import Session, Student, build_task, display_goal, idempotency_key
+from vaxcheck.task import Session, Student, build_task, display_goal, idempotency_key, preflight_goal
 
 SESSION = Session.from_dict({
     "school_name": "Riverside Primary School", "vaccine_name": "HPV vaccine (dose 1)",
@@ -37,6 +37,15 @@ class TestTask(unittest.TestCase):
     def test_script_discloses_first(self):
         task = build_task(SESSION, STUDENT)
         self.assertLess(task.index("DISCLOSE"), task.index("CONFIRM IDENTITY"))
+
+    def test_preflight_goal_is_unambiguous_and_masked(self):
+        goal = preflight_goal(SESSION, STUDENT)
+        self.assertNotIn(STUDENT.guardian_phone, goal)
+        self.assertNotIn("0101", goal)
+        # The planner must read this as *collecting* a decision, not giving one.
+        self.assertIn("collect the guardian's decision", goal)
+        self.assertIn("on behalf of", goal)
+        self.assertIn("Give no medical advice", goal)
 
     def test_idempotency_key_is_deterministic(self):
         self.assertEqual(idempotency_key(SESSION, STUDENT), idempotency_key(SESSION, STUDENT))

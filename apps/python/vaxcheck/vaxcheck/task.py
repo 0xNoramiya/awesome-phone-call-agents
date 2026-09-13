@@ -157,6 +157,29 @@ def display_goal(session: Session, student: Student) -> str:
     )
 
 
+def preflight_goal(session: Session, student: Student) -> str:
+    """Compact, unambiguous goal for `plan_call`.
+
+    `plan_call` is an LLM planner. Given a bare label like "consent for Aisha",
+    it cannot tell whether the bot is *giving* consent or *collecting* it and
+    asks a clarifying question instead of returning ready_to_run. This goal
+    states who is called, on whose behalf, and that the bot collects the
+    guardian's decision. It never contains a phone number - that travels in
+    the recipient field.
+    """
+    return (
+        f"Call {student.guardian_name}, the parent or guardian of "
+        f"{student.student_name} in class {student.class_name}, on behalf of "
+        f"{session.school_name}. Purpose: collect the guardian's decision about "
+        f"the {session.vaccine_name} session on {session.session_date}. Ask "
+        f"whether they consent to the free school session, prefer their own "
+        f"doctor, or decline. Ask whether the student has already had this "
+        f"vaccine, has any allergies, and is unwell today. Record the "
+        f"guardian's answers exactly as given. Give no medical advice. Do not "
+        f"reveal any student detail until the guardian confirms their identity."
+    )
+
+
 def idempotency_key(session: Session, student: Student) -> str:
     """Deterministic per student, per session.
 
