@@ -204,6 +204,7 @@ This project is an awesome list for AI-agent phone-call workflows. Add resources
 ### Apps
 
 
+- [YourVoice](https://github.com/rabiazulfiqar1/yourvoice) - Turns everyday requests: template or fully custom agentic into planned, human-approved CALL-E calls, for deaf and speech-impaired users or anyone who'd rather type than talk. Parallel vendor calls with AI comparison, written outcomes, location sharing, and a safe demo mode. [Demo](https://calle-coral.vercel.app)
 - [Rove](https://github.com/siaohue1188/rove) - Logistics workforce operations control tower that detects the gap between digitally assigned and physically secured workers, uses CALL-E to verify standby-worker availability and arrival feasibility, and applies deterministic recovery or human-escalation rules. [Live Demo](https://rove-iota-seven.vercel.app/)
 - [AcreVoice](https://github.com/dj-DeepakJadhav/acrevoice-farmer-support) - Consent-first farmer-support workspace that turns a focused CALL-E callback into confirmed, reviewable evidence for an agricultural adviser; the local deterministic workflow is no-call by default.
 - [Reachable](apps/python/reachable/) - Keeps a school's emergency contact list reachable and follows up patterns of unexplained absence by phone: a termly contact check finds the numbers that have quietly stopped working, and a register-triggered cascade calls contacts in the school's own order, flagging a dead number the moment an absence call hits it. Never names a child before identity is confirmed, never collects a number by voice, never writes to the register, and never calls a vulnerable-flagged pupil.
@@ -288,6 +289,7 @@ Runnable demo apps live under [`apps/`](apps/). They are not a CALL-E SDK and do
 
 | App | Language | Purpose |
 | --- | --- | --- |
+| [`apps/typescript/your-voice`](apps/typescript/your-voice/) | TypeScript / Node.js | Turns everyday requests: template or fully custom agentic into planned, human-approved CALL-E calls, for deaf and speech-impaired users or anyone who'd rather type than talk. Parallel vendor calls with AI comparison, written outcomes, location sharing, and a safe demo mode. |
 | [`apps/typescript/offhire`](apps/typescript/offhire/) | TypeScript / Node | Equipment off-rent verification with separate pickup evidence, a synthetic no-call demo, and explicit owned-phone roleplay through CALL-E with persisted idempotency and conservative transcript checks. |
 | [`apps/typescript/readycheck`](apps/typescript/readycheck/) | TypeScript / Node | Requirement-based local-service inquiries with CALL-E, source-linked evidence review, focused follow-ups, explicit budget revisions and durable recovery; fictional no-call demo by default. |
 | [`apps/python/rebuttal-dispute-call`](apps/python/rebuttal-dispute-call/) | Python | Merchant-side chargeback evidence call: one disclosed CALL-E call with a fixed script and a strict result schema, a yes used only when the customer's own words say yes, a no that stops the filing, and a masked evidence PDF; dry-run with six scripted scenarios by default, live only with per-run consent, an allowlist, local calling hours and one call per dispute. |
