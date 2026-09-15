@@ -10,6 +10,7 @@ Current apps:
 
 | App | Language | Purpose |
 | --- | --- | --- |
+| [`typescript/lost-and-found-caller`](typescript/lost-and-found-caller/) | TypeScript / Next.js | AI-powered lost-and-found assistant that uses CALL-E to contact lost-and-found departments, describe missing items, check for potential matches, and return an actionable recovery result. |
 | [`typescript/flight-disruption-agent`](typescript/flight-disruption-agent/) | TypeScript / Node | Flight disruption desk that prices keep, rebook, and refund options across the airline, distributor, and OTA chain, has CALL-E call each affected passenger with those exact amounts, and applies only clear, consented choices after the call; for passenger-requested changes, CALL-E agrees the change with the passenger and then calls the airline desk to make it. Everything else goes to human review. Dry-run by default with fictional data. |
 | [`web/callops`](web/callops/) | TypeScript / Vite / Node | Repair follow-up: separate supplier dates and prepare an evidence-linked customer update. No-call browser demo, reusable guarded CALL-E backend, and 214 hermetic tests; representative phone execution pending. |
 | [`typescript/readycheck`](typescript/readycheck/) | TypeScript / Node | Requirement-based local-service inquiries with CALL-E, source-linked evidence review, focused follow-ups, explicit budget revisions and durable recovery; fictional no-call demo by default. |
