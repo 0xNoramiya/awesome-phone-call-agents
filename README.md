@@ -127,6 +127,7 @@ This project is an awesome list for AI-agent phone-call workflows. Add resources
 - [`cod-order-confirmation-call`](skills/cod-order-confirmation-call/) - Prepares an authorized cash-on-delivery confirmation call from order rows with an advisory result schema; validation and status changes belong to the host or a human. Dry-run preview needs no credentials.
 - [`candidate-availability-call`](skills/candidate-availability-call/) - Recruiting coordination skill that confirms candidate interview availability by phone, returns evidence-backed time windows, and leaves scheduling commitments to a human.
 - [`call-reminder`](skills/call-reminder/) - Scheduler wrapper skill for recurring CALL-E phone-call reminders.
+- [`childcare-availability-observer`](skills/childcare-availability-observer/) - Places one bounded CALL-E call to an authorized childcare provider to observe current availability for a stated age band and start window, preserving unknown on voicemail, no-answer, or refusal, without booking, enrolling, or paying.
 - [`callparity-claimkill`](skills/callparity-claimkill/) - ClaimKill (CallParity) compiles the next CALL-E call as a leak-scored refute of a quoted claim; pytest runs on fixtures with zero live calls.
 
 - [`customer-feedback-callback`](skills/customer-feedback-callback/) - Idempotent post-delivery CALL-E feedback call per order with a structured sentiment/missing-item result, no_answer/failed-only single retry, and a feedback/investigation/trend triage that recommends but never auto-applies an urgent business notification.
