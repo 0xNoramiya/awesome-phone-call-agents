@@ -289,6 +289,7 @@ Runnable demo apps live under [`apps/`](apps/). They are not a CALL-E SDK and do
 
 | App | Language | Purpose |
 | --- | --- | --- |
+| [`apps/typescript/avelis`](apps/typescript/avelis/) | JavaScript / Node.js | Breast follow-up evidence and clinician handoff; six fictional cases and an opt-in CALL-E / DeepSeek workflow with local recovery. |
 | [`apps/typescript/your-voice`](apps/typescript/your-voice/) | TypeScript / Node.js | Turns everyday requests: template or fully custom agentic into planned, human-approved CALL-E calls, for deaf and speech-impaired users or anyone who'd rather type than talk. Parallel vendor calls with AI comparison, written outcomes, location sharing, and a safe demo mode. |
 | [`apps/typescript/offhire`](apps/typescript/offhire/) | TypeScript / Node | Equipment off-rent verification with separate pickup evidence, a synthetic no-call demo, and explicit owned-phone roleplay through CALL-E with persisted idempotency and conservative transcript checks. |
 | [`apps/typescript/readycheck`](apps/typescript/readycheck/) | TypeScript / Node | Requirement-based local-service inquiries with CALL-E, source-linked evidence review, focused follow-ups, explicit budget revisions and durable recovery; fictional no-call demo by default. |
