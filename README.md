@@ -293,6 +293,7 @@ Runnable demo apps live under [`apps/`](apps/). They are not a CALL-E SDK and do
 
 | App | Language | Purpose |
 | --- | --- | --- |
+| [`apps/web/harvest-relay`](apps/web/harvest-relay/) | JavaScript / Node | Cold-storage and refrigerated-transport handoff planner with a synthetic no-call default, a CALL-E REST adapter, and reviewed result imports feeding the same constraint solver. |
 | [`apps/typescript/senior-phone-ai`](apps/typescript/senior-phone-ai/) | TypeScript / Next.js | Shared Australian daily knowledge injected into confirmed CALL-E calls, consent-gated post-call search, SMS previews or Twilio delivery, and per-call conversation/SMS history with a no-call default. |
 | [`apps/typescript/avelis`](apps/typescript/avelis/) | JavaScript / Node.js | Breast follow-up evidence and clinician handoff; six fictional cases and an opt-in CALL-E / DeepSeek workflow with local recovery. |
 | [`apps/typescript/your-voice`](apps/typescript/your-voice/) | TypeScript / Node.js | Turns everyday requests: template or fully custom agentic into planned, human-approved CALL-E calls, for deaf and speech-impaired users or anyone who'd rather type than talk. Parallel vendor calls with AI comparison, written outcomes, location sharing, and a safe demo mode. |
