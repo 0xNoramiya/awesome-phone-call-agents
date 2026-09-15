@@ -197,6 +197,7 @@ This project is an awesome list for AI-agent phone-call workflows. Add resources
 - [`conversation-clarify`](skills/conversation-clarify/) - Detects a written reply that agrees without saying which option, or commits without saying when, then settles it with one bounded disclosed CALL-E phone call and writes the answer back into the thread bound to the recipient's own words, or refuses to answer at all.
 ### Apps
 
+- [AcreVoice](https://github.com/dj-DeepakJadhav/acrevoice-farmer-support) - Consent-first farmer-support workspace that turns a focused CALL-E callback into confirmed, reviewable evidence for an agricultural adviser; the local deterministic workflow is no-call by default.
 
 - [Reachable](apps/python/reachable/) - Keeps a school's emergency contact list reachable and follows up patterns of unexplained absence by phone: a termly contact check finds the numbers that have quietly stopped working, and a register-triggered cascade calls contacts in the school's own order, flagging a dead number the moment an absence call hits it. Never names a child before identity is confirmed, never collects a number by voice, never writes to the register, and never calls a vulnerable-flagged pupil.
 - [Completia](https://completia-calle.keljampa.workers.dev/) - Property-payment safety reminder that lets a buyer explicitly request one CALL-E call after saving an independently verified solicitor contact; it does not verify payment instructions, use bank details, or contact the solicitor.
