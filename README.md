@@ -128,6 +128,8 @@ This project is an awesome list for AI-agent phone-call workflows. Add resources
 - [`candidate-availability-call`](skills/candidate-availability-call/) - Recruiting coordination skill that confirms candidate interview availability by phone, returns evidence-backed time windows, and leaves scheduling commitments to a human.
 - [`call-reminder`](skills/call-reminder/) - Scheduler wrapper skill for recurring CALL-E phone-call reminders.
 - [`callparity-claimkill`](skills/callparity-claimkill/) - ClaimKill (CallParity) compiles the next CALL-E call as a leak-scored refute of a quoted claim; pytest runs on fixtures with zero live calls.
+
+- [`customer-feedback-callback`](skills/customer-feedback-callback/) - Idempotent post-delivery CALL-E feedback call per order with a structured sentiment/missing-item result, no_answer/failed-only single retry, and a feedback/investigation/trend triage that recommends but never auto-applies an urgent business notification.
 - [`carecall-intake`](skills/carecall-intake/) - Consent-aware practical-support check-ins that capture only explicit beneficiary needs and route unsafe, unsupported, or uncertain outcomes to human review.
 - [`customer-onboarding-call`](skills/customer-onboarding-call/) - Welcome-call skill that turns a new signup into at most one conversation, a consent-gated structured result, and a CRM follow-up task, with evidence-backed dispositions, ordered outcome classification, per-attempt idempotency, and cancellable retries.
 - [`deployment-approval-call`](skills/deployment-approval-call/) - Spoken, code-verified human approval before an agent or pipeline does something irreversible.
