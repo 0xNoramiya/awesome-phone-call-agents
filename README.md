@@ -282,6 +282,8 @@ This project is an awesome list for AI-agent phone-call workflows. Add resources
 - [Ringbolt](https://github.com/voyagi/ringbolt) - On-call line that phones a human when production breaks, holds a two-way conversation about the incident, and runs the authorized runbook fix only after verifying the spoken confirmation against the call transcript, with a no-call local stand-in by default. [Demo](https://ringbolt.taranity.com) · [Video](https://www.youtube.com/watch?v=EIm87clsks8)
 Runnable demo apps live under [`apps/`](apps/). They are not a CALL-E SDK and do not define a supported application API.
 
+
+- [FixFast](https://github.com/DheerajBishnoi/FixFast-Powered_by_Call-E) - Experimental contractor-dispatch simulator and CALL-E workflow comparing ETA and callout fees; quote grounding is heuristic, and the live path may advance after an ambiguous provider error, so use simulation for evaluation and manually reconcile uncertain calls before further dispatch.
 - [Ringback](https://github.com/DrGitman/Ringback.git) - Callback-first front door for university admin offices: a reasoning agent reads the caller's question against their student record and curated institution documents, then either briefs one CALL-E call or routes the case to a named office without dialling. Third-party callers and requests needing a signature never reach a call. Mock transport with no calls by default.
 
 | App | Language | Purpose |
