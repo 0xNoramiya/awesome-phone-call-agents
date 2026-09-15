@@ -192,8 +192,9 @@ This project is an awesome list for AI-agent phone-call workflows. Add resources
 - [`no-show-shield`](skills/no-show-shield/) - Calls every booking on a given day to confirm it, writes yes/reschedule/cancel outcomes back to the operator's calendar, and returns a short list of only the slots that still need a human.
 - [`exception-resolution-calls`](skills/exception-resolution-calls/) - Resolves a blocked business workflow by phone (e.g. an overdue purchase-order acknowledgement), turning one CALL-E call task into per-recipient structured evidence and a deterministic state change. Gates any closing outcome on a self-reported `spoke_with` identity field, since an authorized phone number is not an authorized person, and differentiates escalation reasons instead of one generic needs-human flag; complements `exception-resolver`'s always-human-approval pattern by fully automating the unambiguous cases and escalating only what genuinely needs a person.
 - [`supply-chain-supplier-status`](skills/supply-chain-supplier-status/) - Autonomous outbound phone calls to suppliers to verify purchase order fulfillment, capture delay causes, calculate financial risk, and sync procurement records.
-- [`conversation-clarify`](skills/conversation-clarify/) - Detects a written reply that agrees without saying which option, or commits without saying when, then settles it with one bounded disclosed CALL-E phone call and writes the answer back into the thread bound to the recipient's own words, or refuses to answer at all.
 
+- [Cold Chain Sentinel](https://github.com/piyushxlabs/cold-chain-sentinel) - Autonomous voice triage engine intercepting reefer temperature excursions via CALL-E in-cab driver calls.
+- [`conversation-clarify`](skills/conversation-clarify/) - Detects a written reply that agrees without saying which option, or commits without saying when, then settles it with one bounded disclosed CALL-E phone call and writes the answer back into the thread bound to the recipient's own words, or refuses to answer at all.
 ### Apps
 
 
