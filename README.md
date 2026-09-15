@@ -422,6 +422,7 @@ The default e2e tests use a local fake broker/OAuth/MCP server or dry-run paths,
 - [DocuFollow AI](https://github.com/naadai/docufollow-ai) - Consent-first document collection workflow for admissions and professional teams that records CALL-E follow-up outcomes and keeps live calls behind an explicit staff-controlled safety setting.
 
 
+- [Maché](https://github.com/NathanNarh/Mache) - Author-described design for CALL-E supplier quote collection and procurement review; the supplied source link was not publicly accessible during review on 2026-09-15, so this is an unverified external design reference, not an included runnable app or evidence of automatic purchase-order execution.
 - [Discharge Guardian](docs/community-apps/discharge-guardian.md) - Author-proposed CALL-E post-discharge follow-up design with advisory care-team review; documentation only, with source currently unavailable and no included runnable or verified offline pipeline.
 - [DwellGuard](https://github.com/Syedsaadhhh/DwellGuard-AI) - Late-arrival dispatch coordination with CALL-E: a driver-verified arrival window feeds a bounded dock call, and only an in-policy commitment becomes a driver handoff. Includes a credential-free deterministic replay and fail-closed fee handling. See the [integration notes](docs/community-apps/dwellguard.md).
 - [ContractorPilot](https://github.com/chaibi-mustapha/ContractorPilot) - Autonomous voice procurement copilot that calls suppliers and trade subs to negotiate pricing, verify stock, and turn jobsite walkthroughs into signed proposals.
