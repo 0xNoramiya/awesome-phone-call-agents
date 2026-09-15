@@ -416,6 +416,7 @@ The default e2e tests use a local fake broker/OAuth/MCP server or dry-run paths,
 
 
 ### Community apps
+- [DocuFollow AI](https://github.com/naadai/docufollow-ai) - Consent-first document collection workflow for admissions and professional teams that records CALL-E follow-up outcomes and keeps live calls behind an explicit staff-controlled safety setting.
 
 
 - [DwellGuard](https://github.com/Syedsaadhhh/DwellGuard-AI) - Late-arrival dispatch coordination with CALL-E: a driver-verified arrival window feeds a bounded dock call, and only an in-policy commitment becomes a driver handoff. Includes a credential-free deterministic replay and fail-closed fee handling. See the [integration notes](docs/community-apps/dwellguard.md).
