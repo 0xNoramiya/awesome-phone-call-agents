@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 
+from .phone import redact
 from .schema import RECIPIENT_RESULT_SCHEMA
 from .task import Session, Student, build_task, idempotency_key
 
@@ -31,8 +32,8 @@ def render(session: Session, students: list[Student], *, show_task: bool = True)
 
     if show_task:
         add("")
-        add("--- call script sent to CALL-E (first student) ---")
-        add(build_task(session, students[0]))
+        add("--- call script sent to CALL-E (first student; numbers masked here, not in the request) ---")
+        add(redact(build_task(session, students[0])))
 
     add("--- result schema sent with every call ---")
     add(json.dumps(RECIPIENT_RESULT_SCHEMA, indent=2))

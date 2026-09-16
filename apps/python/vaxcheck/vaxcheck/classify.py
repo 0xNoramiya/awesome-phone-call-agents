@@ -15,6 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .phone import redact
 from .schema import enum_for, recipient_fields
 from .task import Student
 from .triage import Triage, triage_record
@@ -61,7 +62,7 @@ def sanitize(raw: Any) -> dict[str, Any]:
         allowed = enum_for(key)
         if allowed is None:
             if isinstance(value, str):
-                clean[key] = value.strip()
+                clean[key] = redact(value.strip())
         elif isinstance(value, str) and value.strip() in allowed:
             clean[key] = value.strip()
     return clean
@@ -87,7 +88,7 @@ def record_from_call(
     """Build one student record from that student's own call task."""
     task_completed = call.get("task_completed")
     confidence = _confidence(call)
-    evidence = [e for e in (call.get("evidence") or []) if isinstance(e, str)]
+    evidence = [redact(e) for e in (call.get("evidence") or []) if isinstance(e, str)]
 
     # One task per student, so the task's single recipient is this student. Fall
     # back to the task-level structured result if the recipient row is absent.
@@ -118,7 +119,7 @@ def record_from_call(
         confidence=confidence,
         task_completed=task_completed,
         evidence=evidence,
-        summary=recipient.get("summary") or call.get("summary"),
+        summary=redact(recipient.get("summary") or call.get("summary")) or None,
     )
 
 

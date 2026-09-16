@@ -13,6 +13,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from .origins import OriginError, approved_base_url
+from .phone import redact
 from .schema import RECIPIENT_RESULT_SCHEMA
 from .task import Session, Student, build_task, idempotency_key
 
@@ -28,10 +30,34 @@ def _client(api_key: str, base_url: str | None):
         raise LiveClientError(
             "the CALL-E SDK is not installed. Run: pip install 'calle-ai>=0.7.0'"
         ) from exc
-    kwargs: dict[str, Any] = {"api_key": api_key}
-    if base_url:
-        kwargs["base_url"] = base_url
-    return CalleClient(**kwargs)
+    try:
+        origin = approved_base_url(base_url)
+    except OriginError as exc:
+        raise LiveClientError(str(exc)) from exc
+    return CalleClient(api_key=api_key, base_url=origin)
+
+
+def bind_resumed_call(call: dict[str, Any], session: Session, student: Student) -> dict[str, Any]:
+    """Accept a fetched call only if its metadata names this student and session.
+
+    Never matches by phone: siblings share a guardian's number, and a call id
+    typed by hand could belong to another roster. The binding is the metadata
+    this app wrote when it created the call.
+    """
+    meta = call.get("metadata") if isinstance(call.get("metadata"), dict) else {}
+    expected = {
+        "app": "vaxcheck",
+        "student_id": student.student_id,
+        "school": session.school_name,
+        "session_date": session.session_date,
+    }
+    mismatched = [k for k, v in expected.items() if meta.get(k) != v]
+    if mismatched:
+        raise LiveClientError(
+            f"call {call.get('id')} is not bound to student {student.student_id} in this "
+            f"session (metadata mismatch on: {', '.join(mismatched)}). Nothing was resumed."
+        )
+    return call
 
 
 def call_student(
@@ -74,7 +100,7 @@ def call_student(
         )
     except Exception as exc:  # noqa: BLE001 - surfaced to the operator verbatim
         raise LiveClientError(
-            f"CALL-E create failed for {student.student_id}: {exc}"
+            f"CALL-E create failed for {student.student_id}: {redact(str(exc))}"
         ) from exc
 
     call_id = call.get("id")
@@ -86,7 +112,7 @@ def call_student(
     except Exception as exc:  # noqa: BLE001
         raise LiveClientError(
             f"call {call_id} for {student.student_id} started but waiting failed: "
-            f"{exc}. Resume with: --resume {call_id}"
+            f"{redact(str(exc))}. Resume with: --resume {call_id} --student {student.student_id}"
         ) from exc
 
 
@@ -133,4 +159,4 @@ def fetch_call(call_id: str, *, api_key: str, base_url: str | None = None) -> di
     try:
         return client.calls.get(call_id)
     except Exception as exc:  # noqa: BLE001
-        raise LiveClientError(f"could not fetch call {call_id}: {exc}") from exc
+        raise LiveClientError(f"could not fetch call {call_id}: {redact(str(exc))}") from exc

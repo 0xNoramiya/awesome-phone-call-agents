@@ -21,6 +21,8 @@ import re
 import subprocess
 from dataclasses import dataclass
 
+from .origins import OriginError, approved_base_url
+from .phone import redact
 from .preflight import PreflightError, cli_path, preflight_student
 from .task import Session, Student
 
@@ -94,11 +96,11 @@ def check_api_key() -> Check:
     except ImportError:
         return Check("CALLE_API_KEY", WARN, "set, but the SDK is not installed to verify it")
 
-    base_url = os.environ.get("CALLE_BASE_URL")
-    kwargs = {"api_key": api_key}
-    if base_url:
-        kwargs["base_url"] = base_url
-    client = CalleClient(**kwargs)
+    try:
+        origin = approved_base_url(os.environ.get("CALLE_BASE_URL"))
+    except OriginError as exc:
+        return Check("CALLE_API_KEY", FAIL, str(exc))
+    client = CalleClient(api_key=api_key, base_url=origin)
     try:
         # Read-only and free. Proves the key is live and accepted by the API.
         client.goals.list(limit=1)
@@ -106,7 +108,7 @@ def check_api_key() -> Check:
         text = str(exc)
         if "401" in text or "unauthorized" in text.lower():
             return Check("CALLE_API_KEY", FAIL, "rejected by the API (401) - key is invalid")
-        return Check("CALLE_API_KEY", WARN, f"set, but the check failed: {text[:160]}")
+        return Check("CALLE_API_KEY", WARN, f"set, but the check failed: {redact(text)[:160]}")
     return Check("CALLE_API_KEY", OK, "accepted by the live Developer API")
 
 
@@ -125,6 +127,7 @@ def classify_blockers(blockers: list[str]) -> tuple[str, str]:
     """
     if not blockers:
         return FAIL, "plan_call was not ready to run and gave no reason"
+    blockers = [redact(b) for b in blockers]
     corridor = [b for b in blockers if _CORRIDOR_WORDS.search(b)]
     if corridor:
         return FAIL, corridor[0]
@@ -135,7 +138,7 @@ def check_corridor(session: Session, student: Student) -> Check:
     try:
         result = preflight_student(session, student)
     except PreflightError as exc:
-        return Check("region corridor", FAIL, str(exc))
+        return Check("region corridor", FAIL, redact(str(exc)))
     if result.ready:
         return Check(
             "region corridor", OK,

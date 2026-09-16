@@ -86,7 +86,8 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="required with --execute: you confirm you are authorised to call these guardians",
     )
-    mode.add_argument("--resume", help="fetch an existing call id instead of creating one")
+    mode.add_argument("--resume", metavar="CALL_ID", help="fetch an existing call instead of creating one; requires --student")
+    mode.add_argument("--student", metavar="STUDENT_ID", help="with --resume: the roster student this call belongs to")
     return p
 
 
@@ -144,7 +145,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # ---- live execution ----------------------------------------------------
     if args.execute or args.resume:
-        from vaxcheck.live_client import LiveClientError, fetch_call, run_session
+        from vaxcheck.live_client import LiveClientError, bind_resumed_call, fetch_call, run_session
 
         api_key = os.environ.get("CALLE_API_KEY")
         if not api_key:
@@ -158,16 +159,16 @@ def main(argv: list[str] | None = None) -> int:
 
         try:
             if args.resume:
-                print(f"Resuming call {args.resume} (no new calls placed).")
-                call = fetch_call(args.resume, api_key=api_key, base_url=base_url)
-                phones = {
-                    ph
-                    for r in (call.get("recipients") or [])
-                    if isinstance(r, dict)
-                    for ph in (r.get("phones") or [])
-                }
-                match = next(
-                    (st for st in students if st.guardian_phone in phones), students[0]
+                if not args.student:
+                    print("--resume needs --student <STUDENT_ID> so the result is bound to one roster row.", file=sys.stderr)
+                    return 2
+                match = next((st for st in students if st.student_id == args.student), None)
+                if match is None:
+                    print(f"student {args.student} is not in this roster.", file=sys.stderr)
+                    return 2
+                print(f"Resuming call {args.resume} for {args.student} (no new calls placed).")
+                call = bind_resumed_call(
+                    fetch_call(args.resume, api_key=api_key, base_url=base_url), session, match
                 )
                 pairs = [(match, call)]
             else:

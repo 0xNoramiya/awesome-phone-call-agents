@@ -16,7 +16,8 @@ Everything below is a constraint on that, not a guideline.
 
 ## E.164 phone numbers
 
-- Every number is validated as E.164 once, at roster load. A malformed number fails the
+- Every number is validated as ASCII E.164 once, at roster load, with a full match
+  after stripping spaces, hyphens, dots and parentheses. A malformed number fails the
   whole roster rather than being guessed at or silently skipped.
 - Duplicate `student_id`s are rejected: duplicate ids produce duplicate idempotency
   keys, which would mean a second call to the same family.
@@ -24,6 +25,8 @@ Everything below is a constraint on that, not a guideline.
 ## Masking phone numbers
 
 - Numbers are masked (`+14*****0101`) in every preview, report, log line, and error.
+  Free text returned by a call and provider error messages are redacted for anything
+  that looks like a phone number before they are stored or shown. Requests are not.
 - The call script sent to CALL-E never contains a raw number, and neither does the
   display goal used for previews and preflight.
 - Two tests enforce this: one asserts no raw number appears anywhere in rendered output,
@@ -32,7 +35,8 @@ Everything below is a constraint on that, not a guideline.
 ## No credential exposure
 
 - `CALLE_API_KEY` is read from the environment and never logged, printed, or written to
-  an output file.
+  an output file. It is only ever sent to an approved HTTPS origin
+  (`https://api.heycall-e.com`); `CALLE_BASE_URL` cannot point it anywhere else.
 - `--preflight` shells out to the `calle` CLI with `shell=False` and a fixed argument
   vector. OAuth tokens stay in the CLI's own private cache and are never handled here.
 - Output files contain masked numbers, dispositions, reasons, and guardian-reported
@@ -50,8 +54,13 @@ Everything below is a constraint on that, not a guideline.
 - Idempotency keys are derived from school, session date, and student id. They contain
   no timestamp and no random component, so the same roster always produces the same
   keys.
-- Re-running after a crash resumes rather than re-dialling. `--resume <call_id>` fetches
-  an existing call without creating one.
+- Within CALL-E's idempotency window, a retried create with the same key and request
+  returns the same call rather than dialling again. The window is finite and provider-
+  defined; the app does not persist call ids, so outside it, or with a changed request,
+  a re-run creates a new call. `--resume <call_id> --student <id>` fetches an existing
+  call without creating one and accepts it only if the call's metadata names that
+  student and this session — never by phone number, never by falling back to another
+  row.
 - Calls run sequentially and a failure stops the run, so a fault cannot fan out into a
   burst of calls to families.
 

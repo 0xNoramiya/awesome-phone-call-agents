@@ -21,6 +21,7 @@ import subprocess
 from dataclasses import dataclass
 from typing import Any
 
+from .phone import redact
 from .task import Session, Student, preflight_goal
 
 
@@ -93,7 +94,7 @@ def preflight_student(
 
     if proc.returncode != 0 and not proc.stdout.strip():
         raise PreflightError(
-            f"calle call plan failed: {(proc.stderr or '').strip()[:300]}"
+            f"calle call plan failed: {redact((proc.stderr or '').strip())[:300]}"
         )
 
     try:
@@ -104,7 +105,7 @@ def preflight_student(
     structured = (payload.get("result") or {}).get("structuredContent") or {}
     ready = bool(structured.get("ready_to_run"))
     blockers = [
-        str(q) for q in (structured.get("clarifying_questions") or []) if q is not None
+        redact(str(q)) for q in (structured.get("clarifying_questions") or []) if q is not None
     ]
     return PreflightResult(
         student_id=student.student_id,

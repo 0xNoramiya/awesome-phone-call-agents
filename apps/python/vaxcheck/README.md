@@ -215,10 +215,11 @@ python3 client.py --roster your-real-roster.json --execute --confirm-consent \
 Guarded twice: `--execute` alone refuses to run without `--confirm-consent`. Calls run
 sequentially, one CALL-E task per student.
 
-Resume a single call without re-dialling:
+Resume a single call without re-dialling — the call is bound to one roster row by the
+metadata this app wrote when it created it, never by phone number:
 
 ```bash
-python3 client.py --roster your-real-roster.json --resume call_abc123
+python3 client.py --roster your-real-roster.json --resume call_abc123 --student S-043
 ```
 
 ---
@@ -232,18 +233,29 @@ consent at the start below threshold. Per-student tasks keep each decision backe
 that child's own call.
 
 **Idempotency keys are derived, never generated.** The key is
-`vaxcheck-<school>-<session-date>-<student-id>` — no timestamp, no UUID. Re-running a
-roster after a crash resumes instead of phoning families a second time. This is the
-single most important safety property in the app: a duplicated request must never
-become a duplicated call to a parent.
+`vaxcheck-<school>-<session-date>-<student-id>` — no timestamp, no UUID. Within
+CALL-E's idempotency window, a retried create with the same key and the same request
+returns the same call instead of dialling again. That window is finite and
+provider-defined, and the app does not persist call ids: outside the window, or if any
+part of the request changes, a re-run creates a new call. Keep `--out` output, and
+resume a specific call with `--resume <call_id> --student <id>`. A crash between
+`create` and writing output can leave a call whose id you do not have — check the
+CALL-E dashboard before re-running that student.
 
 **Unknown values are dropped, not coerced.** A value the schema did not define is not
 a signal we understand, so it is discarded — and triage treats absence as "route to a
 human", which is the behaviour we want.
 
-**Numbers are masked everywhere.** Validated once on load as E.164, then masked in
-every preview, log, report and error. A test asserts no raw number appears in any
-output, and another asserts none reaches the call script.
+**Numbers are masked everywhere.** Validated once on load as ASCII E.164 (full match,
+after stripping spaces, hyphens, dots and parentheses), then masked in every preview,
+log, report and error. Free text that comes back from a call — summaries, evidence,
+what a guardian said — is redacted at ingestion, so a phone number a guardian read out
+never reaches the report, the JSON or the board. Provider error messages are redacted
+before they are shown. The request sent to CALL-E is never altered.
+
+**Credentials only go to an approved origin.** The API key is sent to
+`https://api.heycall-e.com` and nowhere else. `CALLE_BASE_URL` may select among approved
+origins but cannot add one; anything else is refused before a request is made.
 
 ---
 
